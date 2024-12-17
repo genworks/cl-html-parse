@@ -1057,9 +1057,17 @@
   (declare (optimize (speed 3) (safety 1)))
   (phtml-internal p nil callback-only callbacks collect-rogue-tags
 		  no-body-tags parse-entities))
-
+#+nil
 (defmacro tag-callback (tag)
   `(cadr (assoc ,tag callbacks)))
+
+;; reverting to `rest` which I'm pretty sure is correct for this.
+;; Joshua Hoeflich, If there are cases where it needs to be `cadr`
+;; then please document these before changing to `cadr` and please
+;; include a parameter to enable the new behavior, rather than quietly
+;; making a breaking change.
+(defmacro tag-callback (tag)
+  `(rest (assoc ,tag callbacks)))
 
 (defun phtml-internal (p read-sequence-func callback-only 
 		       callbacks collect-rogue-tags 
